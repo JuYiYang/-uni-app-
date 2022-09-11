@@ -2,8 +2,7 @@
 	<view class="register">
 		<uni-forms ref="form" :modelValue="formData" :rules="rules">
 			<uni-forms-item label="邮箱" name="email">
-				<uni-easyinput class="input" v-model="formData.email" type="text" placeholder="请输入用户名"
-					@input="binddata('email',$event.detail.value)" />
+				<uni-easyinput class="input" v-model="formData.email" type="text" placeholder="请输入用户名" />
 			</uni-forms-item>
 			<uni-forms-item label="验证码" name="code">
 				<view class="flex">
@@ -35,7 +34,7 @@
 	const form = ref(null)
 	const formData = reactive({
 		name: '',
-		email: 'dcloud@email.com',
+		email: '',
 		code: null,
 		password: null,
 	})
@@ -117,6 +116,14 @@
 				icon: 'none',
 				title: result.message,
 				duration: 2000,
+				complete() {
+					setTimeout(() => {
+						uni.navigateTo({
+							url: '/pages/login/login/login/login?email=' + res
+								.email
+						})
+					}, 2000)
+				}
 			});
 		}).catch(err => {
 			console.log('表单错误信息：', err);

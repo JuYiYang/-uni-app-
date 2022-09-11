@@ -9,7 +9,7 @@
 					<nut-icon size="14" name="search2"></nut-icon>
 				</template>
 			</nut-searchbar> -->
-			<uni-search-bar :focus="true" :radius="100" cancelButton="none"></uni-search-bar>
+			<uni-search-bar :radius="100" cancelButton="none"></uni-search-bar>
 		</view>
 		<view class="swiper" :style="{'marginTop':styleRsult.swiperMarginTop}">
 			<!-- 			<nut-swiper :init-page="list.length" :pagination-visible="true" pagination-color="#426543" auto-play="3000">

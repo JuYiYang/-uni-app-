@@ -21,7 +21,14 @@ export const loginReq = data => {
 		data
 	}, false)
 }
-export const editUserInfo = data => {
+export const getUserInfoReq = params => {
+	return request({
+		url: "user/getMyInfo",
+		method: "GET",
+		params
+	})
+}
+export const editUserInfoReq = data => {
 	return request({
 		url: "user/editMyInfo",
 		method: "PUT",

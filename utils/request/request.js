@@ -12,6 +12,11 @@ export default (req, tokenFlag = true) => {
 				'content-type': 'application/x-www-form-urlencoded' //自定义请求头信息
 			},
 			success: (res) => {
+				if (res.data.status === 1000) {
+					uni.navigateTo({
+						url: '/pages/login/login/login/login'
+					})
+				}
 				resolve(res.data)
 			},
 			fail(err) {

@@ -1,6 +1,7 @@
 // import { defineStore } from "pinia";
 import { defineStore } from 'pinia'
 import { menuStyleTypeConfig, userInfoConfig } from "./storeTypeConfig/index";
+import { getUserInfoReq } from '@/utils/api.js'
 export const pageInfoStore = defineStore("counter", {
 	state: () => {
 		return {
@@ -23,14 +24,17 @@ export const infoStore = defineStore("info", {
 	actions: {
 		setUserInfoFn(value: userInfoConfig): void {
 			this.userInfo = value
-			this.setToken(value.token as string)
-			delete value.token
 			uni.setStorageSync('userInfo', value)
 		},
 		setToken(value: string): void {
-			console.log(value);
 			this.token = value;
 			uni.setStorageSync('token', value);
+		},
+		async userInfoReq() {
+			const result = await getUserInfoReq()
+			if (result.status) return
+			this.setUserInfoFn(result.data)
+			return result.data
 		}
 	},
 });

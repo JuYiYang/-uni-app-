@@ -9,14 +9,15 @@
 					<uni-easyinput class="input" v-model="formData.email" type="text" placeholder="请输入用户名" />
 				</uni-forms-item>
 				<uni-forms-item name="password">
-					<uni-easyinput :focus="true" :clearable="false" type="password" v-model="formData.password"
-						placeholder="请输入您的密码~" />
+					<uni-easyinput :focus="email ?true:false" :clearable="false" type="password"
+						v-model="formData.password" placeholder="请输入您的密码~" />
 				</uni-forms-item>
 			</uni-forms>
 			<view class="btn-submit" @click="loginFn">
 				<uni-icons type="arrowthinright" color="#FFFFFF" size="22"></uni-icons>
 			</view>
 		</view>
+		<navigator class="spanLogin" url="/pages/login/register/register">没有账户，我要注册?</navigator>
 	</view>
 </template>
 
@@ -31,7 +32,8 @@
 		infoStore
 	} from '@/store/index'
 	const {
-		setUserInfoFn
+		setToken,
+		userInfoReq
 	} = infoStore()
 	const form = ref(null)
 	const props = defineProps({
@@ -68,7 +70,8 @@
 				title: result.message
 			})
 			if (result.status) return
-			setUserInfoFn(result.data)
+			setToken(result.data['token'])
+			userInfoReq()
 			uni.switchTab({
 				url: '/pages/index/index'
 			})
@@ -77,6 +80,13 @@
 </script>
 
 <style lang="less" scoped>
+	.spanLogin {
+		margin: 20rpx;
+		display: block;
+		color: red;
+		font-size: 26rpx;
+	}
+
 	.login {
 		width: 100%;
 
