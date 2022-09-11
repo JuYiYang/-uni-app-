@@ -6,8 +6,7 @@
 		<view class="form">
 			<uni-forms ref="form" :modelValue="formData" :rules="rules">
 				<uni-forms-item name="email">
-					<uni-easyinput class="input" v-model="formData.email" type="text" placeholder="请输入用户名"
-						@input="binddata('email',$event.detail.value)" />
+					<uni-easyinput class="input" v-model="formData.email" type="text" placeholder="请输入用户名" />
 				</uni-forms-item>
 				<uni-forms-item name="password">
 					<uni-easyinput :focus="true" :clearable="false" type="password" v-model="formData.password"
@@ -28,6 +27,12 @@
 	import {
 		loginReq
 	} from '@/utils/api.js'
+	import {
+		infoStore
+	} from '@/store/index'
+	const {
+		setUserInfoFn
+	} = infoStore()
 	const form = ref(null)
 	const props = defineProps({
 		email: String
@@ -57,13 +62,16 @@
 	})
 	const loginFn = () => {
 		form.value.validate().then(async (res) => {
-			console.log(res);
 			const result = await loginReq(formData.value)
 			uni.showToast({
 				icon: 'none',
 				title: result.message
 			})
 			if (result.status) return
+			setUserInfoFn(result.data)
+			uni.switchTab({
+				url: '/pages/index/index'
+			})
 		})
 	}
 </script>

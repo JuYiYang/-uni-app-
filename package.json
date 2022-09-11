@@ -1,0 +1,32 @@
+{
+	"uni-app": {
+		"scripts": {
+			"mp-weixin-prd": {
+				"title": "微信小程序 [正式版]",
+				"env": {
+					"UNI_PLATFORM": "mp-weixin",
+					"REQUEST_URL": "https://cleartfnserve-2201242-1308944974.ap-shanghai.run.tcloudbase.com/"
+				},
+				"define": {
+					"MP-WEIXIN": true
+				}
+			},
+			"mp-weixin-dev": {
+				"title": "微信小程序 [开发版]",
+				"env": {
+					"UNI_PLATFORM": "mp-weixin",
+					"REQUEST_URL": "http://192.168.31.247:3000/"
+				},
+				"define": {
+					"MP-WEIXIN": true
+				}
+			}
+		}
+	},
+	"dependencies": {
+		"@types/node": "^18.7.16"
+	},
+	"devDependencies": {
+		"@types/uni-app": "^1.4.4"
+	}
+}

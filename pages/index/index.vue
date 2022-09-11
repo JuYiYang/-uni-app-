@@ -1,14 +1,17 @@
 <template>
 	<view class="index">
-		<view class="searchBar">
+		<view class="searchBar" :style="{
+			'height':styleRsult.searchBarHeight,
+			'top':styleRsult.searchBarTop
+		}">
 			<!-- 			<nut-searchbar v-model="searchValue" placeholder="快来搜索关于你的留言吧！">
 				<template v-slot:leftin>
 					<nut-icon size="14" name="search2"></nut-icon>
 				</template>
 			</nut-searchbar> -->
-			<uni-search-bar :radius="100"></uni-search-bar>
+			<uni-search-bar :focus="true" :radius="100" cancelButton="none"></uni-search-bar>
 		</view>
-		<view class="swiper">
+		<view class="swiper" :style="{'marginTop':styleRsult.swiperMarginTop}">
 			<!-- 			<nut-swiper :init-page="list.length" :pagination-visible="true" pagination-color="#426543" auto-play="3000">
 				<nut-swiper-item v-for="(item, index) in list" :key="item" @click="showPreview(index)">
 					<image :src="item" />
@@ -30,8 +33,8 @@
 				</view>
 				<view class="articleContent">
 					新型农民工进京打工！新型农民工进京打工！
-					{{ styleRsult }}
-					新型农民工进京打工！新型农民工进京打工！
+					<!-- {{ styleRsult }} -->
+					123 新型农民工进京打工！新型农民工进京打工！
 				</view>
 				<view class="articleFooter">
 					<i class="iconfont iconfont icon-clearfnicon"></i>
@@ -41,76 +44,103 @@
 			</view>
 		</template>
 	</view>
+	<view class="notLogin" v-if="!token">
+		<view class="box">
+			<text>你还未登陆</text>
+			<navigator url="/pages/login/login/login/login" class="gotologin">
+				去登陆
+			</navigator>
+		</view>
+	</view>
 </template>
 
-<script>
+<script setup>
 	import {
 		reactive,
 		toRefs,
-		computed
+		computed,
+		ref
 	} from "vue";
 	import {
 		pageInfoStore
-	} from '@/store/index'
-	export default {
-		name: "Index",
-		setup() {
-			// 拿到页面胶囊信息
-			const {
-				menuStyle
-			} = pageInfoStore();
-			// 设置css变量
-			const styleRsult = computed(() => {
-				const searchBarTop = menuStyle.top * 2;
-				const searchBarHeight = menuStyle.height * 2;
-				const swiperMarginTop = searchBarTop + searchBarHeight + 10;
-				return {
-					searchBarTop: searchBarTop + "rpx",
-					searchBarHeight: searchBarHeight + "rpx",
-					swiperMarginTop: swiperMarginTop + "rpx",
-				};
-			});
-			// 设置 背景色
-			const bgcCom = (index) => {
-				let stepOne = index % 4 % 3; // 藏龙给我写的高级算法 (index % 4 ^ 3) % 3
-				return stepOne;
-			};
-			// 搜索值
-			const searchValue = reactive("");
-			// 图片列表
-			const list = reactive([
-				"https://www.dootask.com/uploads/chat/202208/3170/4a92562e85facce5cf622f3c04c4795d.jpg_thumb.jpg",
-			]);
-			// 假文章
-			const articleList = reactive(
-				new Array(50).fill().map((v, i) => {
-					return {
-						name: "XXX" + i,
-						price: i,
-						category: Math.random() > 0.5 ? "蔬菜" : "水果",
-					};
-				})
-			);
-			// 页面滚动事件
-			const onPageScrol = (e) => {
-				console.log(e);
-			}
-			const red = reactive('red')
-			return {
-				red,
-				onPageScrol,
-				searchValue,
-				list,
-				menuStyle,
-				articleList,
-				styleRsult,
-				bgcCom,
-			};
-		},
+	} from '@/store/index';
+	import {
+		onShow,
+	} from "@dcloudio/uni-app";
+	onShow(() => {
+		token.value = uni.getStorageSync('token')
+	})
+	const token = ref('')
+	// 拿到页面胶囊信息
+	const {
+		menuStyle
+	} = pageInfoStore();
+	// 设置css变量
+	const styleRsult = computed(() => {
+		const searchBarTop = menuStyle.top * 2;
+		const searchBarHeight = menuStyle.height * 2;
+		const swiperMarginTop = searchBarTop + searchBarHeight + 10;
+		return {
+			searchBarTop: searchBarTop + "rpx",
+			searchBarHeight: searchBarHeight + "rpx",
+			swiperMarginTop: swiperMarginTop + "rpx",
+		};
+	});
+	// 设置 背景色
+	const bgcCom = (index) => {
+		let stepOne = index % 4 % 3; // 藏龙给我写的高级算法 (index % 4 ^ 3) % 3
+		return stepOne;
 	};
+	// 搜索值
+	const searchValue = reactive("");
+	// 图片列表
+	const list = reactive([
+		"https://www.dootask.com/uploads/chat/202208/3170/4a92562e85facce5cf622f3c04c4795d.jpg_thumb.jpg",
+	]);
+	// 假文章
+	const articleList = reactive(
+		new Array(50).fill().map((v, i) => {
+			return {
+				name: "XXX" + i,
+				price: i,
+				category: Math.random() > 0.5 ? "蔬菜" : "水果",
+			};
+		})
+	);
+	// 页面滚动事件
+	const onPageScrol = (e) => {
+		console.log(e);
+	}
+	const red = reactive('red')
 </script>
 
 <style lang="scss">
+	.notLogin {
+		position: fixed;
+		bottom: 0rpx;
+		left: 0rpx;
+		width: 100%;
+		height: 88rpx;
+		background-color: #586e92;
+		line-height: 88rpx;
+		color: antiquewhite;
+
+		.box {
+			padding: 0rpx 40rpx;
+			max-width: 100%;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			.gotologin {
+				border-radius: 25rpx;
+				width: 140rpx;
+				height: 80rpx;
+				// background-color: red;
+			}
+		}
+	}
+
 	.dark {
 		background-color: #6e8bb9 !important;
 	}
@@ -128,15 +158,17 @@
 
 	.searchBar {
 		display: flex;
-		justify-content: center;
+		justify-content: flex-start;
 		align-items: center;
 		z-index: 999;
 		width: 100%;
 		height: 300px;
-		background-color: v-bind(red);
-		height: v-bind("styleRsult.searchBarHeight");
+		// background-color: v-bind(red);
+		// height: v-bind("styleRsult.searchBarHeight");
+		height: 0rpx;
 		position: fixed;
-		top: v-bind("styleRsult.searchBarTop");
+		// top: v-bind("styleRsult.searchBarTop");
+		top: 0rpx;
 		left: 0rpx;
 
 		.nut-searchbar {
@@ -151,7 +183,8 @@
 
 	.swiper {
 		padding: 0rpx 20rpx;
-		margin-top: v-bind("styleRsult.swiperMarginTop");
+		// margin-top: v-bind("styleRsult.swiperMarginTop");
+		margin-top: 0rpx;
 		margin-bottom: 20rpx;
 	}
 

@@ -1,19 +1,56 @@
 <template>
 	<view class="userPage">
 		<view class="userInfo">
-			<image class="header" src="/static/yao (10).jpg" mode=""></image>
+			<image class="header" :src="userInfo?.header || defaultHeader" mode=""></image>
 			<view class="userInfo-content">
-				<text class="usename">Hello,深情小狗4号</text>
-				<text class="hello">欢迎来到树洞~</text>
+				<text class="usename">Hello,{{ userInfo?.username }}</text>
+				<text class="hello">欢迎来到233</text>
 			</view>
-			<view>
-				2333
+			<view @click="editInfo">
+				编辑信息
 			</view>
 		</view>
 	</view>
 </template>
 
-<script setup lang="ts"></script>
+<script setup>
+	import {
+		infoStore
+	} from '@/store/index'
+	import {
+		onShow
+	} from "@dcloudio/uni-app";
+	import {
+		ref
+	} from 'vue'
+	import {
+		editUserInfo
+	} from '@/utils/api.js'
+	onShow(() => {
+		userInfo.value = uni.getStorageSync('userInfo')
+		if (!userInfo.value) {
+			uni.navigateTo({
+				url: '/pages/login/login/login/login'
+			})
+		}
+	})
+	const defaultHeader = ref(
+		'https://ts1.cn.mm.bing.net/th?id=OIP-C.TQcBnO20xnfq0rGqNdZdJQAAAA&w=99&h=106&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2'
+	)
+	const userInfo = ref(null)
+	const editInfo = () => {
+		uni.showActionSheet({
+			itemList: ['修改用户名'],
+			success: async (res) => {
+				const result = await editUserInfo({})
+				console.log(result);
+			},
+			fail: function(res) {
+				console.log(res.errMsg);
+			}
+		});
+	}
+</script>
 
 <style lang="less" scoped>
 	.userPage {

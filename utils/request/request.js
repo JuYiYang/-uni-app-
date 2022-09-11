@@ -1,8 +1,10 @@
-const requestUrl = 'http://192.168.31.247:3000/'
+import appConfig from '@/app.config'
 export default (req, tokenFlag = true) => {
 	return new Promise((resolve, reject) => {
+		const token = uni.getStorageSync('token')
+		console.log(token)
 		uni.request({
-			url: requestUrl + req.url, 
+			url: appConfig.REQUEST_URL + req.url,
 			data: req.data,
 			method: req.method || 'GET',
 			header: {

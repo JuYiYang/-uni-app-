@@ -21,3 +21,10 @@ export const loginReq = data => {
 		data
 	}, false)
 }
+export const editUserInfo = data => {
+	return request({
+		url: "user/editMyInfo",
+		method: "PUT",
+		data
+	})
+}

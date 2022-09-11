@@ -19,6 +19,7 @@
 			</uni-forms-item>
 		</uni-forms>
 		<button @click="submit">Submit</button>
+		<navigator class="spanLogin" url="/pages/login/login/login/login">已有账户，我要登陆?</navigator>
 	</view>
 </template>
 
@@ -124,6 +125,13 @@
 </script>
 
 <style lang="less">
+	.spanLogin {
+		margin: 20rpx;
+		display: block;
+		color: red;
+		font-size: 26rpx;
+	}
+
 	.register {
 		padding: 30rpx;
 	}
