@@ -15,7 +15,7 @@
 				"title": "微信小程序 [开发版]",
 				"env": {
 					"UNI_PLATFORM": "mp-weixin",
-					"REQUEST_URL": "http://192.168.31.247:3000/"
+					"REQUEST_URL": "https://www.cleartfn.top"
 				},
 				"define": {
 					"MP-WEIXIN": true

@@ -12,8 +12,8 @@
 		</view>
 	</view>
 	<uni-popup ref="popup" type="dialog" :mask-click="false">
-		<uni-popup-dialog title="修改用户名" placeholder="输入用户名" mode="input" @close="close" @confirm="editUserInfo"
-			:duration="2000" :before-close="true">
+		<uni-popup-dialog title="修改用户名" placeholder="输入用户名" mode="input" @close="close"
+			@confirm="editUserInfo($event,'username')" :duration="2000" :before-close="true">
 		</uni-popup-dialog>
 	</uni-popup>
 </template>
@@ -30,8 +30,12 @@
 		ref
 	} from 'vue'
 	import {
-		editUserInfoReq,
+		editUserInfoReq
 	} from '@/utils/api.js'
+
+	import {
+		uploadImg
+	} from '@/utils/upload.js'
 	onShow(() => {
 		userInfo.value = uni.getStorageSync('userInfo')
 		if (!userInfo.value) {
@@ -54,23 +58,36 @@
 	} = infoStore()
 	const editInfoPop = () => {
 		uni.showActionSheet({
-			itemList: ['修改用户名'],
+			itemList: ['修改用户名', '更换头像'],
 			success: async (res) => {
-				popup.value.open()
+				if (res.tapIndex == 0) {
+					popup.value.open()
+				} else {
+					editHeader()
+				}
 			},
 			fail: function(res) {
 				console.log(res.errMsg);
 			}
 		});
 	}
-	const editUserInfo = async (e) => {
+	const editHeader = async () => {
+		try {
+			const result = await uploadImg()
+			console.log(result);
+		} catch {
+			console.log(123);
+		}
+
+	}
+	const editUserInfo = async (e, key) => {
 		let obj = JSON.parse(JSON.stringify(userInfo.value))
 		for (let k in obj) {
 			if (!obj[k]) delete obj[k]
 		}
 		const result = await editUserInfoReq({
 			...obj,
-			username: e
+			key: e
 		})
 		if (result.status != 0) {
 			uni.showToast({
@@ -79,11 +96,13 @@
 				duration: 2000,
 			})
 		}
-		userInfo.value.username = e
+		userInfo.value = {
+			...obj,
+			key: e
+		}
 		close()
 	}
 	const close = () => {
-
 		popup.value.close()
 	}
 </script>

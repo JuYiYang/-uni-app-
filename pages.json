@@ -27,6 +27,13 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/tabbar/release/release",
+			"style": {
+				"navigationBarTitleText": "发布",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"tabBar": {
@@ -39,6 +46,12 @@
 			"text": "首页",
 			"iconPath": "static/tabbar/home-uncheckout.png",
 			"selectedIconPath": "static/tabbar/home.png"
+		}, {
+			"pagePath": "pages/tabbar/release/release",
+			"text": "发布",
+			"iconPath": "static/tabbar/release-uncheckout.png",
+			"selectedIconPath": "static/tabbar/release.png"
+
 		}, {
 			"pagePath": "pages/tabbar/user/user/user",
 			"text": "我的",
