@@ -6,3 +6,10 @@ export const $msg = (title, duration = 1500, icon = 'none', mask = "false") => {
 		mask
 	})
 }
+export const $previewImg = (urls, current, longPressActions = true) => {
+	uni.previewImage({
+		urls,
+		current,
+		longPressActions,
+	})
+}

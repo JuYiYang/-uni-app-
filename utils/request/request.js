@@ -2,7 +2,6 @@ import appConfig from '@/app.config'
 export default (req, tokenFlag = true) => {
 	return new Promise((resolve, reject) => {
 		const token = uni.getStorageSync('token')
-		console.log(token)
 		uni.request({
 			url: appConfig.REQUEST_URL + req.url,
 			data: req.data,

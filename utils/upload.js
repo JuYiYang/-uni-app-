@@ -4,7 +4,7 @@ const uploadFile = (file, path, onCall = () => {}) => {
 			cloudPath: path,
 			filePath: file,
 			config: {
-				env: 'prod-2gu6i5oga6c1929f' // 需要替换成自己的微信云托管环境ID
+				env: 'prod-2gu6i5oga6c1929f' // 云ID
 			},
 			success: res => resolve(res.fileID),
 			fail: e => {

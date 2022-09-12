@@ -1,9 +1,10 @@
 <template>
 	<view class="userPage">
 		<view class="userInfo">
-			<image class="header" :src="userInfo?.header || defaultHeader" mode=""></image>
+			<image class="header" @click="$previewImg([userInfo?.cloudHeader || defaultHeader])"
+				:src="userInfo?.cloudHeader || defaultHeader" mode="aspectFit"></image>
 			<view class="userInfo-content">
-				<text class="usename">Hello,{{ userInfo?.username }}</text>
+				<text class="username">Hello,{{ userInfo?.username }}</text>
 				<text class="hello">欢迎来到233</text>
 			</view>
 			<view @click="editInfoPop">
@@ -33,7 +34,8 @@
 		editUserInfoReq
 	} from '@/utils/api.js'
 	import {
-		$msg
+		$msg,
+		$previewImg
 	} from '@/utils/tips.js'
 	import {
 		uploadImg
@@ -95,10 +97,11 @@
 			$msg(result.message)
 			return
 		}
-		userInfo.value = {
-			...obj,
-			[key]: e
-		}
+		// userInfo.value = {
+		// 	...obj,
+		// 	[key]: e
+		// }
+		userInfo.value = await userInfoReq()
 		$msg(result.message)
 		close()
 	}
@@ -145,8 +148,13 @@
 				display: flex;
 				align-items: flex-start;
 				flex-direction: column;
+				width: 270rpx;
 
 				.username {
+					max-width: 100%;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
 					font-weight: 800;
 					font-size: 32rpx;
 				}
