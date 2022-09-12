@@ -32,7 +32,9 @@
 	import {
 		editUserInfoReq
 	} from '@/utils/api.js'
-
+	import {
+		$msg
+	} from '@/utils/tips.js'
 	import {
 		uploadImg
 	} from '@/utils/upload.js'
@@ -74,9 +76,9 @@
 	const editHeader = async () => {
 		try {
 			const result = await uploadImg()
-			console.log(result);
+			editUserInfo(result, 'cloudHeader')
 		} catch {
-			console.log(123);
+			$msg('取消上传')
 		}
 
 	}
@@ -87,19 +89,17 @@
 		}
 		const result = await editUserInfoReq({
 			...obj,
-			key: e
+			[key]: e
 		})
 		if (result.status != 0) {
-			uni.showToast({
-				icon: 'none',
-				title: result.message,
-				duration: 2000,
-			})
+			$msg(result.message)
+			return
 		}
 		userInfo.value = {
 			...obj,
-			key: e
+			[key]: e
 		}
+		$msg(result.message)
 		close()
 	}
 	const close = () => {

@@ -5,7 +5,7 @@
 				"title": "微信小程序 [正式版]",
 				"env": {
 					"UNI_PLATFORM": "mp-weixin",
-					"REQUEST_URL": "https://cleartfnserve-2201242-1308944974.ap-shanghai.run.tcloudbase.com/"
+					"REQUEST_URL": "https://www.cleartfn.top/"
 				},
 				"define": {
 					"MP-WEIXIN": true
@@ -15,7 +15,7 @@
 				"title": "微信小程序 [开发版]",
 				"env": {
 					"UNI_PLATFORM": "mp-weixin",
-					"REQUEST_URL": "https://www.cleartfn.top"
+					"REQUEST_URL": "https://www.cleartfn.top/"
 				},
 				"define": {
 					"MP-WEIXIN": true
