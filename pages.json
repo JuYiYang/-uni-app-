@@ -48,9 +48,9 @@
 			"selectedIconPath": "static/tabbar/home.png"
 		}, {
 			"pagePath": "pages/tabbar/release/release",
-			"text": "发布",
-			"iconPath": "static/tabbar/release-uncheckout.png",
-			"selectedIconPath": "static/tabbar/release.png"
+			"text": "一起拉屎",
+			"iconPath": "static/tabbar/feces.png",
+			"selectedIconPath": "static/tabbar/feces.png"
 
 		}, {
 			"pagePath": "pages/tabbar/user/user/user",

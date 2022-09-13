@@ -1,98 +1,108 @@
 <template>
 	<view class="release">
-		<view class="imgs">
-			<template v-for="item in imgs">
-				<view class="cacheImg">
-					<image :src="item.cacheUrl" mode=""></image>
-				</view>
-			</template>
-			<view class="uploadImg">
-				<uni-icons type="upload" @click="submit" size="30" color="#6e8bb9"></uni-icons>
-			</view>
+		<text class="alongWith">一起拉</text>
+		<text class="second">不同的时空，同样的事情</text>
+		<view class="connect">
+			<image :src="userInfo?.cloudHeader" class="avatar" mode="aspectFit"></image>
+			<image src="https://wimg.588ku.com/gif620/21/08/09/c8440e99553a0444e12c843fd0ada213.gif" class="ecg"
+				mode=""></image>
+			<image src="../../../static/avatr.png" class="avatar" mode=""></image>
+		</view>
+		<view class="btn hollowOut">
+			跟我一起拉屎
+		</view>
+		<view class="btn solid">
+			随缘跟人拉屎
 		</view>
 	</view>
 </template>
 
 <script setup>
 	import {
-		ref,
-		watch
+		ref
 	} from 'vue'
-	wx.cloud.init()
-	let imgs = ref([])
-	const submit = async () => {
-		await uni.chooseImage({
-			count: 1,
-			async success(res) {
-				console.log(res);
-				let fileName = res.tempFiles[0].path.split('.')[0].substring(11)
-				imgs.value.push({
-					cacheUrl: res.tempFilePaths[0],
-					fileName,
-				})
-				uploadFile(res.tempFilePaths[0], fileName, () => {})
-			}
-		})
-	}
-	watch(imgs.value, (n, o) => {
-		console.log(...imgs.value);
+	import {
+		$userInfo
+	} from '@/utils/tips.js'
+
+	import {
+		onShow,
+	} from "@dcloudio/uni-app";
+	onShow(() => {
+		userInfo.value = $userInfo()
 	})
-	const uploadFile = (file, path, onCall = () => {}) => {
-		console.log(123);
-		return new Promise((resolve, reject) => {
-			const task = wx.cloud.uploadFile({
-				cloudPath: path,
-				filePath: file,
-				config: {
-					env: 'prod-2gu6i5oga6c1929f' // 需要替换成自己的微信云托管环境ID
-				},
-				success: res => resolve(res.fileID),
-				fail: e => {
-					const info = e.toString()
-					if (info.indexOf('abort') != -1) {
-						reject(new Error('【文件上传失败】中断上传'))
-					} else {
-						reject(new Error('【文件上传失败】网络或其他错误'))
-					}
-				}
-			})
-			task.onProgressUpdate((res) => {
-				if (onCall(res) == false) {
-					task.abort()
-				}
-			})
-		})
-	}
+	const userInfo = ref($userInfo())
 </script>
 
 <style lang="less" scoped>
-	.release {
-		padding: 40rpx 20rpx;
+	.btn {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 88rpx;
+		border-radius: 48rpx;
+	}
 
-		.imgs {
-			display: flex;
-			flex-wrap: wrap;
-		}
+	.solid {
+		color: white;
+		background-image: linear-gradient(to right, rgb(71, 160, 242), rgb(96, 198, 239), );
+	}
 
-		.cacheImg,
-		.uploadImg {
-			margin: 10rpx;
+	.hollowOut {
+		margin-bottom: 60rpx;
+		border: 1rpx solid rgb(71, 160, 242);
+		color: rgb(71, 160, 242);
+	}
+
+	.connect {
+		width: 100%;
+		height: 300rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+
+		.ecg {
 			width: 200rpx;
-			height: 200rpx;
+			height: 100rpx;
 		}
 
-		.cacheImg {
-			image {
-				width: 100%;
-				height: 100%;
-			}
+		.avatar {
+			width: 128rpx;
+			height: 128rpx;
+			overflow: hidden;
+			border-radius: 50%;
+		}
+	}
+
+	#canvas {
+		width: 300px;
+		height: 90px;
+		margin: auto;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		position: absolute;
+	}
+
+	.release {
+		height: 100vh;
+		background-color: rgb(32, 32, 32);
+		display: flex;
+		flex-direction: column;
+		// justify-content: center;
+		align-items: center;
+		padding: 40rpx 80rpx;
+
+		.alongWith {
+			font-size: 32rpx;
+			color: white;
 		}
 
-		.uploadImg {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			border: 1rpx solid #c3d9f8;
+		.second {
+			color: rgb(92, 92, 92);
+			font-size: 26rpx;
 		}
 	}
 </style>

@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { menuStyleTypeConfig, userInfoConfig } from "./storeTypeConfig/index";
 import { getUserInfoReq } from '@/utils/api.js'
 export const pageInfoStore = defineStore("counter", {
-	state: () => {
+	this: () => {
 		return {
 			menuStyle: {} as menuStyleTypeConfig,
 		};
@@ -15,11 +15,14 @@ export const pageInfoStore = defineStore("counter", {
 	},
 });
 export const infoStore = defineStore("info", {
-	state: () => {
+	this: () => {
 		return {
 			userInfo: {} as userInfoConfig,
 			token: ''
 		};
+	},
+	getters: {
+		UserInfo: () => this.userInfo
 	},
 	actions: {
 		setUserInfoFn(value: userInfoConfig): void {
