@@ -1,35 +1,34 @@
 <template>
 	<view class="">
 		socket
+		<button @click="fn">123123</button>
 	</view>
 </template>
 
 <script setup>
-const socket = 	wx.connectSocket({
-		url: 'ws://192.168.31.247:3001',
-		header: {
-			'content-type': 'application/json'
-		},
+	import {
+		onLoad
+	} from "@dcloudio/uni-app";
+	import {
+		init,
+		emitMsg
+	} from '@/socket/index.js'
+	const socket = init()
+	socket.onOpen((res) => {
+		console.log('open----',res);
 	})
-	// 监听
-	wx.onSocketOpen((result) => {
-		wx.sendSocketMessage({
-			data: {
-				type:'JSON',
-				data:{
-					a:12134
-				}
-			}
-		})
+	socket.onMessage(res => {
+		const data = JSON.parse(res.data)
+		console.log(data);
 	})
-	// 失败监控
-	wx.onSocketError((result) => {
-		console.log("websocket连接失败", result);
+
+	socket.onError(() => {
+		console.log('---连接失败');
 	})
-	// 监听服务器的数据返回
-	wx.onSocketMessage((result) => {
-		console.log("服务器的数据返回", result);
-	})
+
+	const fn = () => {
+		emitMsg('lian', 'dsiojefijasioefjioaeswhjfio')
+	}
 </script>
 
 <style lang="less" scoped>
