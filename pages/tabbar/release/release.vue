@@ -9,7 +9,9 @@
 			<image src="../../../static/avatr.png" class="avatar" mode=""></image>
 		</view>
 		<view class="btn hollowOut">
-			跟我一起拉屎
+			<navigator url="../../friend/friend">
+				跳转
+			</navigator>
 		</view>
 		<view class="btn solid">
 			随缘跟人拉屎

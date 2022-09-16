@@ -42,7 +42,16 @@
 			}
 
 		}
-	],
+	    ,{
+            "path" : "pages/friend/friend",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"tabBar": {
 		"color": "#626567",
 		"backgroundColor": "#FBFBFB",

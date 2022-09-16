@@ -28,6 +28,12 @@ export const getUserInfoReq = params => {
 		params
 	})
 }
+export const getFriendInfoReq = id => {
+	return request({
+		url: "user/getUserInfo?id=" + id,
+		methods: "GET",
+	})
+}
 export const editUserInfoReq = data => {
 	return request({
 		url: "user/editMyInfo",
