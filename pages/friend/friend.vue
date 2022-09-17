@@ -3,14 +3,14 @@
 		<view class="friendList" v-for="item in userList">
 			<view class="left">
 				<view class="header">
-					<image :src="item.cloudHeader" mode=""></image>
+					<image :src="item?.header" mode=""></image>
 				</view>
 				<view class="userCt">
-					<text class="nickname">{{ item.username }}</text>
+					<text class="nickname">{{ item?.username }}</text>
 					<text class="msg"> 快去聊聊吧~ </text>
 				</view>
 			</view>
-			<view class="sendMsg" @click="sendUser(item.id)">
+			<view class="sendMsg" @click="sendUser(item)">
 				发送消息
 			</view>
 		</view>
@@ -19,41 +19,40 @@
 
 <script setup>
 	import {
-		ref
+		ref,
+		watch
 	} from 'vue'
 	import {
 		getFriendInfoReq
 	} from '@/utils/api.js'
 	import {
-		onShow,
+		onLoad,
 	} from "@dcloudio/uni-app";
 	import {
-		init,
-		emitMsg,
-		close,
-	} from '@/socket/index.js'
+		useSocket
+	} from '@/store/socket/index';
 	const userList = ref([])
-	onShow(async () => {
-		let result = await getFriendInfoReq('0000000005')
-		userList.value.push(result.data)
+	onLoad(async () => {
+		let result = await getFriendInfoReq()
+		userList.value = result.data
 	})
-	const sendUser = (id) => {
+	const sendUser = (item) => {
 		uni.navigateTo({
-			url: "/pages/chat/chat?id=" + id
+			url: "/pages/chat/chat?data=" + encodeURIComponent(JSON.stringify(item)),
 		})
 	}
-	let socket = init()
-	socket.onOpen((res) => {
-		emitMsg('connect', '')
+
+	const Socket = useSocket()
+	watch(() => Socket.OPEN, (n, o) => {
+		if (n == 1) {
+			Socket.emitMsg('connect', {
+				a: '123978912379'
+			})
+		}
+	}, {
+		immediate: true
 	})
-	socket.onMessage(res => {
-		const data = JSON.parse(res.data)
-		console.log(data);
-	})
-	socket.onClose((e) => {
-		close()
-		init()
-	})
+	Socket.connect()
 </script>
 
 <style lang="less" scoped>

@@ -9,7 +9,7 @@
 			<image src="../../../static/avatr.png" class="avatar" mode=""></image>
 		</view>
 		<view class="btn hollowOut">
-			<navigator url="../../friend/friend">
+			<navigator url="/pages/friend/friend">
 				跳转
 			</navigator>
 		</view>

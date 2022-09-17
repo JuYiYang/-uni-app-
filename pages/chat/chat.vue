@@ -1,5 +1,6 @@
 <template>
 	<view class="">
+		<input type="text" v-model="msg"><button @click="sendMsg">发送消息</button>
 		<button @click="close">退出连接</button>
 	</view>
 </template>
@@ -12,24 +13,26 @@
 		onLoad
 	} from "@dcloudio/uni-app";
 	import {
-		init,
-		emitMsg,
-		close
-	} from '@/socket/index.js'
+		useSocket
+	} from '@/store/socket/index';
 	onLoad((options) => {
-		objId.value = options.id
-		objCnt()
+		firendData.value = JSON.parse(decodeURIComponent(options.data))
+		uni.setNavigationBarTitle({
+			title: firendData.value.username
+		})
+		Socket.emitMsg('buttObj', {
+			target: firendData.value.id
+		})
 	})
-	const objId = ref(null)
-
-	const socket = init()
-
-	const objCnt = () => {
-		emitMsg('buttObj', {
-			objId: objId.value
+	let firendData = ref(null)
+	const Socket = useSocket()
+	const msg = ref(null)
+	const sendMsg = () => {
+		Socket.emitMsg('buttObjMsg', {
+			targetId: firendData.value.id,
+			msg: msg.value,
 		})
 	}
-
 </script>
 
 <style lang="less" scoped>

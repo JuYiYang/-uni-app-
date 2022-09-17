@@ -28,10 +28,10 @@ export const getUserInfoReq = params => {
 		params
 	})
 }
-export const getFriendInfoReq = id => {
+export const getFriendInfoReq = params => {
 	return request({
-		url: "user/getUserInfo?id=" + id,
-		methods: "GET",
+		url: "firend/getMyFriends",
+		methods: "POST",
 	})
 }
 export const editUserInfoReq = data => {

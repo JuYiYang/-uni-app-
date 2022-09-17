@@ -37,21 +37,19 @@
 		}, {
 			"path": "pages/chat/chat",
 			"style": {
-				"navigationBarTitleText": "",
+				// "navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/friend/friend",
+			"style": {
+				"navigationBarTitleText": "我的好友",
 				"enablePullDownRefresh": false
 			}
 
 		}
-	    ,{
-            "path" : "pages/friend/friend",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"tabBar": {
 		"color": "#626567",
 		"backgroundColor": "#FBFBFB",
