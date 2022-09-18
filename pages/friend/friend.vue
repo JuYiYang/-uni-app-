@@ -41,17 +41,9 @@
 			url: "/pages/chat/chat?data=" + encodeURIComponent(JSON.stringify(item)),
 		})
 	}
-
 	const Socket = useSocket()
-	watch(() => Socket.OPEN, (n, o) => {
-		if (n == 1) {
-			Socket.emitMsg('connect', {
-				a: '123978912379'
-			})
-		}
-	}, {
-		immediate: true
-	})
+	// 建立连接
+	
 	Socket.connect()
 </script>
 

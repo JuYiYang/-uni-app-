@@ -2,11 +2,47 @@ import {
 	defineStore
 } from 'pinia';
 import appConfig from '@/app.config'
+// import { nextTick } from '../../../HBuilderX/plugins/hbuilderx-language-services/builtin-dts/common/vue2And3';
+
+// let websocket = null;
+
+// const init = () => {
+// 	if (websocket) return;
+// 	connect();
+// 	registryListener();
+// }
+
+// const connect = () => {
+// 	websocket = wx.connectSocket({
+// 		url: appConfig.CHAT_SOCKET_URL,
+// 		header: {
+// 			'content-type': 'application/json'
+// 		},
+// 	});
+// }
+
+// const onConnect = (fn) => {
+// 	websocket.onOpen(() => fn(websocket));
+// }
+
+// const registryListener = () => {
+
+// }
+
+// init();
+
+
+// onConnect((websocket) => {
+// 	websocket.en
+// })
+
+
 export const useSocket = defineStore('Socket', {
 	state: () => {
 		return {
 			Socket: null,
-			OPEN: 0
+			OPEN: 0,
+			userId: null
 		};
 	},
 	getters: {
@@ -25,12 +61,11 @@ export const useSocket = defineStore('Socket', {
 					'content-type': 'application/json'
 				},
 			})
-			console.log(this.Socket);
 			this.open()
 		},
 		open() {
 			this.Socket.onOpen((res) => {
-				this.OPEN = 1
+				this.emitMsg('connect', {})
 			})
 		},
 		// 重连
@@ -43,9 +78,10 @@ export const useSocket = defineStore('Socket', {
 			console.log(this.Socket);
 			// return
 			let data = {
-				userId: uni.getStorageSync('userInfo').id,
+				sender_id: uni.getStorageSync('userInfo').id,
 				Value
 			}
+			this.userId = data.userId
 			let obj = JSON.stringify({
 				type,
 				data
