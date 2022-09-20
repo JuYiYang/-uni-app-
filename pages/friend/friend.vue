@@ -31,6 +31,9 @@
 	import {
 		useSocket
 	} from '@/store/socket/index';
+	import {
+		Connect
+	} from '@/socket/index.js'
 	const userList = ref([])
 	onLoad(async () => {
 		let result = await getFriendInfoReq()
@@ -41,10 +44,8 @@
 			url: "/pages/chat/chat?data=" + encodeURIComponent(JSON.stringify(item)),
 		})
 	}
-	const Socket = useSocket()
 	// 建立连接
-	
-	Socket.connect()
+	const Socket = Connect()
 </script>
 
 <style lang="less" scoped>

@@ -71,6 +71,7 @@ export const useSocket = defineStore('Socket', {
 		// 重连
 		reconnection() {
 			this.Socket = null
+			console.log('Socket，正在重连 ----');
 			this.connect()
 		},
 		// 发送数据
