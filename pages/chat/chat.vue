@@ -21,9 +21,9 @@
 		</view>
 		<view class="sendMsg">
 			<view class="ipt">
-				<input type="text" :confirm-type="'瑶瑶'" :adjust-position="false" v-model="msg">
+				<input type="text" :confirm-type="'12212'" :adjust-position="false" v-model="msg">
 			</view>
-			<view class="sendBtn" @click="sendMsg">
+			<view class="sendBtn" :class="{ 'noTheFocus':msg=='','focusBox':msg !='' }" @click="sendMsg">
 				发送
 			</view>
 		</view>
@@ -46,6 +46,9 @@
 	import {
 		emitMsg
 	} from '@/socket/index.js'
+	import {
+		getUserChats
+	} from '@/utils/api.js'
 	onLoad((options) => {
 		firendData.value = JSON.parse(decodeURIComponent(options.data))
 		uni.setNavigationBarTitle({
@@ -54,6 +57,7 @@
 		emitMsg('buttObj', {
 			target: firendData.value.id
 		})
+		getChats()
 	})
 	// 发送对象
 	let firendData = ref(null)
@@ -61,18 +65,24 @@
 	let chattingRecords = ref([])
 	// 当前发送的消息
 	let chatting = ref({})
-
+	// 查询
+	const getChats = async () => {
+		const result = await getUserChats({
+			receiver_id: firendData.value.id
+		})
+		chattingRecords.value = [...result.data, ...chattingRecords.value]
+	}
 	const userId = uni.getStorageSync('userInfo').id
 
-	let msg = ref(null)
+	let msg = ref('')
 
 	const sendMsg = () => {
-		emitMsg('buttObjMsg', {
+		chattingRecords.value.push({
+			sender_id: userId,
 			receiver_id: firendData.value.id,
 			content: msg.value,
 		})
-		chattingRecords.value.push({
-			sender_id: userId,
+		emitMsg('buttObjMsg', {
 			receiver_id: firendData.value.id,
 			content: msg.value,
 		})
@@ -84,6 +94,14 @@
 </script>
 
 <style lang="less" scoped>
+	.focusBox {
+		background-color: rgb(1, 153, 253);
+	}
+
+	.noTheFocus {
+		background-color: rgb(117, 195, 245);
+	}
+
 	.chat {
 		background-color: rgb(241, 241, 241);
 		height: 100vh;
@@ -94,16 +112,18 @@
 		padding: 20rpx 20rpx;
 		display: flex;
 		flex-direction: column;
-		// position: relative;
+		min-height: 100vh;
+		padding-bottom: 88rpx;
+		overflow-y: auto;
+		overflow-anchor: auto; // position: relative;
 	}
 
 	.msgBox {
 		padding: 10rpx 20rpx;
 		border-radius: 25rpx;
-		min-width: 147rpx;
+		// min-width: 147rpx;
 		max-width: 247rpx;
 		height: auto;
-		background-color: antiquewhite;
 
 		.txt {
 			word-wrap: break-all;
@@ -118,10 +138,20 @@
 
 	.r {
 		justify-content: flex-end;
+
+		.msgBox {
+			background-color: rgb(1, 153, 255);
+			color: rgb(245, 245, 245);
+		}
 	}
 
 	.l {
 		justify-content: flex-start;
+
+		.msgBox {
+			background-color: rgb(245, 245, 245);
+			color: #3a3a3a;
+		}
 	}
 
 	.sendMsg {
@@ -155,7 +185,7 @@
 			width: 20%;
 			height: 100%;
 			color: white;
-			background-color: antiquewhite;
+			// background-color: antiquewhite;
 			font-size: 32rpx;
 			display: flex;
 			justify-content: center;
