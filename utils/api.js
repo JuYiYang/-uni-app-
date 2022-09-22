@@ -41,3 +41,10 @@ export const editUserInfoReq = data => {
 		data
 	})
 }
+export const getUserChats = data => {
+	return request({
+		url: "firend/getMyFriendsChats",
+		method: "POST",
+		data
+	})
+}

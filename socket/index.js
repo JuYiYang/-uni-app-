@@ -1,5 +1,7 @@
 import appConfig from '@/app.config'
-
+import {
+	$msg
+} from '@/utils/tips.js'
 // Socket
 let Socket = null
 // 重连
@@ -8,16 +10,26 @@ let time = null
 //  当前userId
 let userId = uni.getStorageSync('userInfo').id
 
+// 重连次数
+let reconnectionStep = 12
+// 当前重连
+let atpPesentStep = 0
+// 心跳时间 ms
+let waitingTime = 6000
+
+// 当前Socket状态 1 已经链接 0// 未连接
+let acCode = 0
+
 export const Connect = () => {
-	Socket = null
 	console.log('Socket，正在连接中 ----');
+	Socket = null
 	Socket = wx.connectSocket({
 		url: appConfig.CHAT_SOCKET_URL,
 		header: {
 			'content-type': 'application/json'
 		},
 		fail() {
-			Socket = null
+			console.log(appConfig.CHAT_SOCKET_URL+'fail');
 		}
 	})
 	open()
@@ -26,6 +38,7 @@ export const Connect = () => {
 function open() {
 	Socket.onOpen((res) => {
 		emitMsg('connect', {})
+		acCode = 1
 		console.log('连接成功');
 	})
 	// jia
@@ -33,14 +46,20 @@ function open() {
 }
 
 function reconnection() {
-	if (Socket) {
-		clearInterval(time)
-		return
-	}
-	time = setInterval(() => {
-		console.log('Socket，正在重连 ----');
-		connect()
-	}, 7000)
+	// time = setInterval(() => {
+	// 	atpPesentStep += 1
+	// 	if (acCode == 1 || (atpPesentStep >= reconnectionStep)) {
+	// 		clearInterval(time)
+	// 		if (atpPesentStep => reconnectionStep) {
+	// 			$msg('心跳已超时，现在处于离线状态' + atpPesentStep)
+	// 		}
+	// 		atpPesentStep = 0
+	// 		return
+	// 	}
+	// 	console.log('重连中----');
+	atpPesentStep += 1
+	Connect()
+	// }, waitingTime)
 }
 // 发送数据
 export function emitMsg(type, Value) {
@@ -89,9 +108,21 @@ function monitor() {
 		}
 	})
 	Socket.onClose(() => {
+		if (atpPesentStep == 0) acCode = 0
+		if (acCode == 1 || (atpPesentStep >= reconnectionStep)) {
+
+			if (idx => reconnectionStep) {
+
+				$msg('心跳已超时，现在处于离线状态' + atpPesentStep)
+				atpPesentStep = 0
+				return
+			}
+		}
+		reconnection()
 		console.log('Socket已关闭 --');
 	})
 	Socket.onError(() => {
+		acCode = 0
 		console.log('Socket发生错误 --');
 	})
 }

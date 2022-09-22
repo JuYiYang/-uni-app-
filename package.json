@@ -5,7 +5,8 @@
 				"title": "微信小程序 [正式版]",
 				"env": {
 					"UNI_PLATFORM": "mp-weixin",
-					"REQUEST_URL": "https://www.cleartfn.top/"
+					"REQUEST_URL": "https://www.cleartfn.top/",
+					"CHAT_SOCKET_URL": "ws://www.cleartfn.top:3000/chat/chat"
 				},
 				"define": {
 					"MP-WEIXIN": true

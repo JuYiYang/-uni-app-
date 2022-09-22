@@ -45,7 +45,7 @@
 			"path": "pages/friend/friend",
 			"style": {
 				"navigationBarTitleText": "我的好友",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 
 		}

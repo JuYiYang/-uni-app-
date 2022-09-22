@@ -21,7 +21,7 @@
 		</view>
 		<view class="sendMsg">
 			<view class="ipt">
-				<input type="text" :confirm-type="'12212'" :adjust-position="false" v-model="msg">
+				<input type="text" :confirm-type="'12212'"  v-model="msg">
 			</view>
 			<view class="sendBtn" :class="{ 'noTheFocus':msg=='','focusBox':msg !='' }" @click="sendMsg">
 				发送
@@ -34,7 +34,8 @@
 	import {
 		ref,
 		watch,
-		toRefs
+		toRefs,
+		nextTick
 	} from 'vue'
 	import {
 		onLoad,
@@ -71,6 +72,7 @@
 			receiver_id: firendData.value.id
 		})
 		chattingRecords.value = [...result.data, ...chattingRecords.value]
+		scr()
 	}
 	const userId = uni.getStorageSync('userInfo').id
 
@@ -86,7 +88,16 @@
 			receiver_id: firendData.value.id,
 			content: msg.value,
 		})
+		scr()
 		msg.value = ''
+	}
+	const scr = () => {
+		nextTick(() => {
+			uni.pageScrollTo({
+				scrollTop: 99999999999,
+				selector: '.chat',
+			})
+		})
 	}
 	uni.$on('SocketButtObjMsg', (data) => {
 		chattingRecords.value.push(data)
@@ -104,7 +115,8 @@
 
 	.chat {
 		background-color: rgb(241, 241, 241);
-		height: 100vh;
+		min-height: 100vh;
+		overflow-y: auto;
 	}
 
 	.chattingRecords {
@@ -112,10 +124,8 @@
 		padding: 20rpx 20rpx;
 		display: flex;
 		flex-direction: column;
-		min-height: 100vh;
-		padding-bottom: 88rpx;
-		overflow-y: auto;
-		overflow-anchor: auto; // position: relative;
+		padding-bottom: 120rpx;
+		// overflow-anchor: auto; // position: relative;
 	}
 
 	.msgBox {
