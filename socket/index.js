@@ -39,16 +39,15 @@ function open() {
 	Socket.onOpen((res) => {
 		emitMsg('connect', {})
 		acCode = 0
+		clearInterval(time)
 		console.log('连接成功');
 	})
 
 	monitor()
 }
 
-function reconnection() {
-	acCode = 1
+export function reconnection() {
 	time = setInterval(() => {
-		console.log(atpPesentStep);
 		if (acCode == 0 || atpPesentStep >= reconnectionStep) {
 			clearInterval(time)
 			if (atpPesentStep >= reconnectionStep) {
@@ -57,23 +56,12 @@ function reconnection() {
 			atpPesentStep = 0
 			return
 		}
+		console.log(atpPesentStep);
 		atpPesentStep += 1
 		Connect()
 	}, 5000)
-	// time = setInterval(() => {
-	// 	atpPesentStep += 1
-	// 	if (acCode == 1 || (atpPesentStep >= reconnectionStep)) {
-	// 		clearInterval(time)
-	// 		if (atpPesentStep => reconnectionStep) {
-	// 			$msg('心跳已超时，现在处于离线状态' + atpPesentStep)
-	// 		}
-	// 		atpPesentStep = 0
-	// 		return
-	// 	}
-	// 	console.log('重连中----');
-	// atpPesentStep += 1 Connect()
-	// }, waitingTime)
 }
+
 // 发送数据
 export function emitMsg(type, Value) {
 	let data = {
@@ -110,6 +98,7 @@ function monitor() {
 			console.log(val.type);
 			switch (val.type) {
 				case 'buttObjMsgServe':
+					console.log('收到消息')
 					uni.$emit('SocketButtObjMsg', val.data)
 					break;
 				default:
@@ -120,11 +109,12 @@ function monitor() {
 			console.log('try 捕获到错误', err);
 		}
 	})
-	Socket.onClose(() => {
+	Socket.onClose((e) => {
 		if (acCode != 1) {
+			acCode = 1
 			reconnection()
 		}
-		console.log('Socket已关闭 --');
+		console.log('Socket已关闭 --', e);
 	})
 	Socket.onError(() => {
 		console.log('Socket发生错误 --');

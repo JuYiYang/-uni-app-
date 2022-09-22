@@ -19,9 +19,12 @@
 				</template>
 			</template>
 		</view>
+		<view class="bgc">
+
+		</view>
 		<view class="sendMsg">
 			<view class="ipt">
-				<input type="text" :confirm-type="'12212'" v-model="msg">
+				<input @focus="focus" @blur="blur" type="text" :confirm-type="'12212'" v-model="msg">
 			</view>
 			<view class="sendBtn" :class="{ 'noTheFocus':msg=='','focusBox':msg !='' }" @click="sendMsg">
 				发送
@@ -39,13 +42,12 @@
 	} from 'vue'
 	import {
 		onLoad,
-		onReady
+		onReady,
+		onShow
 	} from "@dcloudio/uni-app";
 	import {
-		useSocket
-	} from '@/store/socket/index';
-	import {
-		emitMsg
+		emitMsg,
+		reconnection
 	} from '@/socket/index.js'
 	import {
 		getUserChats
@@ -56,9 +58,12 @@
 			title: firendData.value.username
 		})
 		emitMsg('buttObj', {
-			target: firendData.value.id
+			receiver_id: firendData.value.id
 		})
 		getChats()
+	})
+	onShow(() => {
+		reconnection()
 	})
 	// 发送对象
 	let firendData = ref(null)
@@ -78,6 +83,7 @@
 	let msg = ref('')
 
 	const sendMsg = () => {
+		if (msg.value == '') return
 		chattingRecords.value.push({
 			sender_id: userId,
 			receiver_id: firendData.value.id,
@@ -104,12 +110,28 @@
 		deep: true,
 		immediate: true
 	})
+	let pd = ref(0)
+	const focus = (e) => {
+		pd.value = e.detail.height - 10
+		console.log(pd.value);
+	}
+	const blur = (e) => {
+		pd.value = 0
+	}
 	uni.$on('SocketButtObjMsg', (data) => {
 		chattingRecords.value.push(data)
 	})
 </script>
 
 <style lang="less" scoped>
+	.bgc {
+		position: fixed;
+		bottom: 0rpx;
+		width: 100%;
+		height: 125rpx;
+		background-color: rgb(241, 241, 241);
+	}
+
 	.focusBox {
 		background-color: rgb(1, 153, 253);
 	}
@@ -137,12 +159,15 @@
 		padding: 10rpx 20rpx;
 		border-radius: 25rpx;
 		// min-width: 147rpx;
-		max-width: 247rpx;
+		max-width: 90%;
 		height: auto;
+		word-wrap: break-word;
+		white-space: pre-wrap;
 
-		.txt {
-			word-wrap: break-all;
-		}
+		// .txt {
+		// 	word-wrap: break-all;
+		// 	white-space: pre-wrap;
+		// }
 	}
 
 	.msg {
@@ -171,6 +196,7 @@
 
 	.sendMsg {
 		margin-bottom: 20rpx;
+		padding-bottom: 0px;
 		max-width: 100%;
 		min-width: 100%;
 		height: 88rpx;
@@ -179,6 +205,7 @@
 		// background-color: white !important; //
 		display: flex;
 		align-items: center;
+		z-index: 999;
 
 		.ipt {
 			width: 80%;

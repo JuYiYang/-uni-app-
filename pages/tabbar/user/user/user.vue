@@ -1,8 +1,8 @@
 <template>
 	<view class="userPage">
 		<view class="userInfo">
-			<image class="header" @click="$previewImg([userInfo?.cloudHeader || defaultHeader])"
-				:src="userInfo?.cloudHeader || defaultHeader" mode="aspectFit"></image>
+			<image class="header" @click="$previewImg([userInfo?.header || defaultHeader])"
+				:src="userInfo?.header || defaultHeader" mode="aspectFit"></image>
 			<view class="userInfo-content">
 				<text class="username">Hello,{{ userInfo?.username }}</text>
 				<text class="hello">欢迎来到233</text>

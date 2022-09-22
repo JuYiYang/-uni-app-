@@ -73,6 +73,9 @@
 		})
 	}
 	const addFriend = () => {
+		uni.navigateTo({
+			url: "/pages/friend/addFriends/addFriends",
+		})
 		$msg('懒，不想做~')
 	}
 	// 建立连接
