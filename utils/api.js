@@ -48,3 +48,10 @@ export const getUserChats = data => {
 		data
 	})
 }
+export const getAssignUser = data => {
+	return request({
+		url: "firend/getAssignUser",
+		method: "POST",
+		data
+	})
+}

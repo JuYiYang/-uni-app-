@@ -21,7 +21,7 @@
 		</view>
 		<view class="sendMsg">
 			<view class="ipt">
-				<input type="text" :confirm-type="'12212'"  v-model="msg">
+				<input type="text" :confirm-type="'12212'" v-model="msg">
 			</view>
 			<view class="sendBtn" :class="{ 'noTheFocus':msg=='','focusBox':msg !='' }" @click="sendMsg">
 				发送
@@ -35,7 +35,7 @@
 		ref,
 		watch,
 		toRefs,
-		nextTick
+		nextTick,
 	} from 'vue'
 	import {
 		onLoad,
@@ -72,7 +72,6 @@
 			receiver_id: firendData.value.id
 		})
 		chattingRecords.value = [...result.data, ...chattingRecords.value]
-		scr()
 	}
 	const userId = uni.getStorageSync('userInfo').id
 
@@ -85,10 +84,10 @@
 			content: msg.value,
 		})
 		emitMsg('buttObjMsg', {
+			sender_id: userId,
 			receiver_id: firendData.value.id,
 			content: msg.value,
 		})
-		scr()
 		msg.value = ''
 	}
 	const scr = () => {
@@ -99,6 +98,12 @@
 			})
 		})
 	}
+	watch(() => chattingRecords.value, (n, o) => {
+		scr()
+	}, {
+		deep: true,
+		immediate: true
+	})
 	uni.$on('SocketButtObjMsg', (data) => {
 		chattingRecords.value.push(data)
 	})

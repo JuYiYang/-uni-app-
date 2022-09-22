@@ -47,7 +47,12 @@
 				"navigationBarTitleText": "我的好友",
 				"enablePullDownRefresh": true
 			}
-
+		}, {
+			"path": "pages/friend/addFriends/addFriends",
+			"style": {
+				"navigationBarTitleText": "搜索好友",
+				"enablePullDownRefresh": true
+			}
 		}
 	],
 	"tabBar": {

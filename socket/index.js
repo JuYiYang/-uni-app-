@@ -11,7 +11,7 @@ let time = null
 let userId = uni.getStorageSync('userInfo').id
 
 // 重连次数
-let reconnectionStep = 12
+let reconnectionStep = 5
 // 当前重连
 let atpPesentStep = 0
 // 心跳时间 ms
@@ -29,7 +29,7 @@ export const Connect = () => {
 			'content-type': 'application/json'
 		},
 		fail() {
-			console.log(appConfig.CHAT_SOCKET_URL+'fail');
+			console.log(appConfig.CHAT_SOCKET_URL + 'fail');
 		}
 	})
 	open()
@@ -38,14 +38,28 @@ export const Connect = () => {
 function open() {
 	Socket.onOpen((res) => {
 		emitMsg('connect', {})
-		acCode = 1
+		acCode = 0
 		console.log('连接成功');
 	})
-	// jia
+
 	monitor()
 }
 
 function reconnection() {
+	acCode = 1
+	time = setInterval(() => {
+		console.log(atpPesentStep);
+		if (acCode == 0 || atpPesentStep >= reconnectionStep) {
+			clearInterval(time)
+			if (atpPesentStep >= reconnectionStep) {
+				$msg('心跳已超时，现在处于离线状态' + atpPesentStep)
+			}
+			atpPesentStep = 0
+			return
+		}
+		atpPesentStep += 1
+		Connect()
+	}, 5000)
 	// time = setInterval(() => {
 	// 	atpPesentStep += 1
 	// 	if (acCode == 1 || (atpPesentStep >= reconnectionStep)) {
@@ -57,8 +71,7 @@ function reconnection() {
 	// 		return
 	// 	}
 	// 	console.log('重连中----');
-	atpPesentStep += 1
-	Connect()
+	// atpPesentStep += 1 Connect()
 	// }, waitingTime)
 }
 // 发送数据
@@ -108,21 +121,12 @@ function monitor() {
 		}
 	})
 	Socket.onClose(() => {
-		if (atpPesentStep == 0) acCode = 0
-		if (acCode == 1 || (atpPesentStep >= reconnectionStep)) {
-
-			if (idx => reconnectionStep) {
-
-				$msg('心跳已超时，现在处于离线状态' + atpPesentStep)
-				atpPesentStep = 0
-				return
-			}
+		if (acCode != 1) {
+			reconnection()
 		}
-		reconnection()
 		console.log('Socket已关闭 --');
 	})
 	Socket.onError(() => {
-		acCode = 0
 		console.log('Socket发生错误 --');
 	})
 }
