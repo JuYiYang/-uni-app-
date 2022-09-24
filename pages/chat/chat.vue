@@ -5,7 +5,7 @@
 				<template v-if="item.sender_id !== userId">
 					<view class="msg l">
 						<view class="msgBox">
-							<text class="txt">{{ item.content }}</text>
+							<text class="txt">{{ exchangeEmoji(item.content) }}</text>
 						</view>
 					</view>
 				</template>
@@ -13,15 +13,23 @@
 				<template v-else>
 					<view class="msg r">
 						<view class="msgBox">
-							<text class="txt">{{ item.content }}</text>
+							<text class="txt">{{ exchangeEmoji(item.content) }}</text>
 						</view>
 					</view>
 				</template>
 			</template>
 		</view>
+		{{ emojiFlag }}
 		<view class="sendMsg">
 			<view class="ipt">
 				<input type="text" :confirm-type="'12212'" v-model="msg">
+			</view>
+			<view class="selectEmoji">
+				<span @click.stop.prevent="openEmojiSelect">😃</span>
+				<view class="emojiS" v-show="emojiFlag">
+					<use-emoji @emoji-click="emojiEmit" :emoji-style="{backgroundColor:'rgba(241,241,241,.7)'}">
+					</use-emoji>
+				</view>
 			</view>
 			<view class="sendBtn" :class="{ 'noTheFocus':msg=='','focusBox':msg !='' }" @click="sendMsg">
 				发送
@@ -31,6 +39,10 @@
 </template>
 
 <script setup>
+	import {
+		exchangeEmoji,
+		exchangeCode
+	} from '@/utils/emoji.js'
 	import {
 		ref,
 		watch,
@@ -78,18 +90,20 @@
 	let msg = ref('')
 
 	const sendMsg = () => {
+		console.log(msg.value);
 		chattingRecords.value.push({
 			sender_id: userId,
 			receiver_id: firendData.value.id,
-			content: msg.value,
+			content: exchangeCode(msg.value),
 		})
 		emitMsg('buttObjMsg', {
 			sender_id: userId,
 			receiver_id: firendData.value.id,
-			content: msg.value,
+			content: exchangeCode(msg.value),
 		})
 		msg.value = ''
 	}
+
 	const scr = () => {
 		nextTick(() => {
 			uni.pageScrollTo({
@@ -98,14 +112,29 @@
 			})
 		})
 	}
+
 	watch(() => chattingRecords.value, (n, o) => {
 		scr()
 	}, {
 		deep: true,
 		immediate: true
 	})
+
 	uni.$on('SocketButtObjMsg', (data) => {
 		chattingRecords.value.push(data)
+	})
+	// 表情处理部分
+	let emojiFlag = ref(false)
+
+	const openEmojiSelect = () => {
+		emojiFlag.value = !emojiFlag.value
+	}
+	const emojiEmit = (e) => {
+		msg.value = msg.value + e.ct
+		emojiFlag.value = false
+	}
+	watch(() => msg.value, (n, o) => {
+		console.log(n);
 	})
 </script>
 
@@ -166,6 +195,22 @@
 		.msgBox {
 			background-color: rgb(245, 245, 245);
 			color: #3a3a3a;
+		}
+	}
+
+	.selectEmoji {
+		width: 60rpx;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 40rpx;
+		position: relative;
+
+		.emojiS {
+			position: absolute;
+			bottom: 108rpx;
+			right: -40rpx;
 		}
 	}
 
