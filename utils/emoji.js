@@ -1,42 +1,42 @@
 let emoji = [
-	'ðŸ˜ƒ',
-	'ðŸ˜„',
-	'ðŸ˜',
-	'ðŸ˜†',
-	'ðŸ˜…',
-	'ðŸ˜‚',
-	'ðŸ˜‰',
-	'ðŸ˜Š',
-	'ðŸ˜‡',
-	'ðŸ˜',
-	'ðŸ˜˜',
-	'ðŸ˜š',
-	'ðŸ˜‹',
-	'ðŸ˜œ',
-	'ðŸ˜',
-	'ðŸ˜',
-	'ðŸ˜¶',
-	'ðŸ˜',
-	'ðŸ˜’',
-	'ðŸ˜Œ',
-	'ðŸ˜”',
-	'ðŸ˜ª',
-	'ðŸ˜·',
-	'ðŸ˜µ',
-	'ðŸ˜Ž',
-	'ðŸ˜²',
-	'ðŸ˜³',
-	'ðŸ˜¨',
-	'ðŸ˜°',
-	'ðŸ˜¥',
-	'ðŸ˜¢',
-	'ðŸ˜­',
-	'ðŸ˜±',
-	'ðŸ˜–',
-	'ðŸ˜£',
-	'ðŸ˜ž',
-	'ðŸ˜“',
-	'ðŸ˜©',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
 ]
 
 let emojiDecimalism = [
@@ -98,7 +98,7 @@ const emojiJson = emoji.map((item, index) => {
 		ct: item
 	}
 })
-// é€šè¿‡codeæ‹¿åˆ°emoji
+// Í¨¹ýcodeÄÃµ½emoji
 export const exchangeEmoji = (code) => {
 	for (let i = 0; i < emojiJson.length; i++) {
 		if (code == emojiJson[i].code) {
@@ -108,7 +108,7 @@ export const exchangeEmoji = (code) => {
 		}
 	}
 }
-// é€šè¿‡emojiæ‹¿åˆ°code 
+// Í¨¹ýemojiÄÃµ½code 
 export const exchangeCode = (emoji) => {
 	console.log(emoji);
 	for (let i = 0; i < emojiJson.length; i++) {
@@ -119,19 +119,22 @@ export const exchangeCode = (emoji) => {
 		}
 	}
 }
-// å¤„ç†ä¼ é€’è¿‡æ¥çš„emoji 
-// å¤„ç†ä¼ é€’è¿‡æ¥çš„å­—ç¬¦ä¸²
-const chuliEmoji = (str) => {
-	const stera = str.match(/\/.*?\//g)
-	if (stera) {
-		// console.log(str.replace(stera, '$'));
-		for (let i = 0; i < stera.length; i++) {
-			str = str.replace(stera[i], exchangeEmoji(stera[i]));
-		}
-	}
-	console.log(str);
-	return str
+// ´¦Àí´«µÝ¹ýÀ´µÄemoji 
+const chuliCode = (code) =>{
+	
 }
+	// ´¦Àí´«µÝ¹ýÀ´µÄ×Ö·û´®
+	const chuliEmoji = (str) => {
+		const stera = str.match(/\/.*?\//g)
+		if (stera) {
+			// console.log(str.replace(stera, '$'));
+			for (let i = 0; i < stera.length; i++) {
+				str = str.replace(stera[i], exchangeEmoji(stera[i]));
+			}
+		}
+		console.log(str);
+		return str
+	}
 
 
 export default emojiJson

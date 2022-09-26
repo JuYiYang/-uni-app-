@@ -54,7 +54,16 @@
 				"enablePullDownRefresh": true
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/tabbar/user/friendReq/friendReq",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "好友申请",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"tabBar": {
 		"color": "#626567",
 		"backgroundColor": "#FBFBFB",
