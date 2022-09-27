@@ -1,6 +1,6 @@
 <template>
 	<view class="empty">
-		<image src="https://www.cleartfn.top/images/emptyPic.png" mode=""></image>
+		<image src="https://www.cleartfn.top/static/images/emptyPic.png" mode=""></image>
 		<text class="txt">{{ text }}</text>
 	</view>
 </template>

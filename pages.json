@@ -23,7 +23,7 @@
 		}, {
 			"path": "pages/login/login/login/login",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "登陆",
 				"enablePullDownRefresh": false
 			}
 

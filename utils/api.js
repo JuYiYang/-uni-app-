@@ -78,3 +78,11 @@ export const changFriendsStatusReq = data => {
 		data
 	})
 }
+// 向指定用户发送好友申请
+export const addUserFirendReq = data => {
+	return request({
+		url: "firend/addFirend",
+		method: "post",
+		data
+	})
+}

@@ -20,7 +20,7 @@
 			</view>
 		</template>
 		<template v-else>
-			<use-empty text="这个星球找不到这个人"></use-empty>
+			<use-empty :text="query==''?'请输入搜索值':'这个星球没有这个人~'"></use-empty>
 		</template>
 	</view>
 </template>
@@ -35,10 +35,14 @@
 		onPullDownRefresh
 	} from "@dcloudio/uni-app";
 	import {
-		getAssignUser
+		getAssignUser,
+		addUserFirendReq
 	} from '@/utils/api.js'
+	import {
+		$msg
+	} from '@/utils/tips.js'
 	onLoad(() => {
-		serachReq('')
+		// serachReq('')
 	})
 	let query = ref('')
 	let friends = ref([])
@@ -59,7 +63,10 @@
 		friends.value = result.data
 	}
 	const addUser = async (id) => {
-		console.log(id);
+		const result = await addUserFirendReq({
+			receiverId: id
+		})
+		$msg(result.message)
 	}
 </script>
 

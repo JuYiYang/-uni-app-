@@ -18,21 +18,25 @@
 			<view class="box">
 				<navigator url="/pages/tabbar/user/friendReq/friendReq" class="icon">
 					<view class="label" hover-class="hover">
-						<view url="/pages/tabbar/user/friendReq/friendReq" class="icon">
-							<view class="badge">{{userinfo.friendNum || 0}}</view>
-							<uni-icons type="staff" size="30"></uni-icons>
-						</view>
+						<uni-badge class="uni-badge-left-margin" :text="userinfo.friendNum" absolute="rightTop"
+							size="small">
+							<view url="/pages/tabbar/user/friendReq/friendReq" class="icon">
+								<uni-icons type="staff" size="30"></uni-icons>
+							</view>
+						</uni-badge>
 						好友申请
 					</view>
 				</navigator>
-				</view>
-				<view class="box">
-				<navigator url="/pages/tabbar/user/friendReq/friendReq" class="icon">
+			</view>
+			<view class="box">
+				<navigator url="/pages/friend/addFriends/addFriends" class="icon">
 					<view class="label" hover-class="hover">
-						<view url="/pages/tabbar/user/friendReq/friendReq" class="icon">
-							<view class="badge">{{userinfo.friendNum}}</view>
-							<uni-icons type="personadd" size="30"></uni-icons>
-						</view>
+						<uni-badge class="uni-badge-left-margin" :text="0" absolute="rightTop"
+							size="small">
+							<view url="/pages/tabbar/user/friendReq/friendReq" class="icon">
+								<uni-icons type="personadd" size="30"></uni-icons>
+							</view>
+						</uni-badge>
 						添加好友
 					</view>
 				</navigator>
