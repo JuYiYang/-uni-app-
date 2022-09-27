@@ -32,7 +32,9 @@
 					<text>userInfo</text>
 				</view>
 				<view class="articleContent">
-					新型农民工进京打工！新型农民工进京打工！
+
+					<span v-html="item.ct"></span>
+					<!-- 新型农民工进京打工！新型农民工进京打工！ -->
 					<!-- {{ styleRsult }} -->
 					123 新型农民工进京打工！新型农民工进京打工！
 				</view>
@@ -55,6 +57,7 @@
 </template>
 
 <script setup>
+	import a from '@/utils/emoji.js'
 	import {
 		reactive,
 		toRefs,
@@ -99,9 +102,10 @@
 	]);
 	// 假文章
 	const articleList = reactive(
-		new Array(50).fill().map((v, i) => {
+		new Array(5).fill().map((v, i) => {
 			return {
 				name: "XXX" + i,
+				ct: a[i],
 				price: i,
 				category: Math.random() > 0.5 ? "蔬菜" : "水果",
 			};

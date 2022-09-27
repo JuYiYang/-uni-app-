@@ -51,7 +51,7 @@ export function reconnection() {
 		if (acCode == 0 || atpPesentStep >= reconnectionStep) {
 			clearInterval(time)
 			if (atpPesentStep >= reconnectionStep) {
-				$msg('心跳已超时，现在处于离线状态' + atpPesentStep)
+				console.log('心跳已超时，现在处于离线状态' + atpPesentStep)
 			}
 			atpPesentStep = 0
 			return
